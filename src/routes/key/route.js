@@ -44,7 +44,7 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     await Model.findOneAndUpdate(
       { _id: req.params.id },

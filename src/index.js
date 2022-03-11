@@ -2,10 +2,12 @@ const express = require('express')
 const cors = require('cors')
 const config = require('./config')
 const alert = require('./routes/alert/route')
+const connectDB = require('./db')
 const app = express()
 
+connectDB()
 app.use(cors())
-app.use(express.json({}))
+app.use(express.json())
 
 app.set('port', config.port)
 
