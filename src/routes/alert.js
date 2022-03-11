@@ -1,14 +1,17 @@
 const express = require('express')
 const nodemailer = require('nodemailer')
 const router = express.Router()
+const {
+  transport: { user, password }
+} = require('../config')
 
 let transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
   secure: true, // true for 465, false for other ports
   auth: {
-    user: 'jona03g97@gmail.com', // generated ethereal user
-    pass: 'seperezinbhwlqra' // generated ethereal password
+    user: user, // generated ethereal user
+    pass: password // generated ethereal password
   }
 })
 

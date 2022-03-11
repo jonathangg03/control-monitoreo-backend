@@ -3,5 +3,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 module.exports = {
-  port: process.env.PORT
+  port: process.env.PORT,
+  transport: {
+    user: process.env.TRANSPORTER_USER,
+    password: process.env.TRANSPORTER_PASSWORD
+  }
 }
