@@ -2,12 +2,20 @@ const express = require('express')
 const router = express.Router()
 const Model = require('./model')
 
+router.get('/', async (req, res) => {
+  try {
+    const replacement = await Model.find()
+    res.json(replacement)
+  } catch (error) {
+    console.log(error.message)
+    res.send(`No se pudo obtener la alerta`)
+  }
+})
+
 router.get('/:id', async (req, res) => {
   try {
     const replacement = await Model.findById(req.params.id)
-    res.json({
-      replacement
-    })
+    res.json(replacement)
   } catch (error) {
     console.log(error.message)
     res.send(`No se pudo obtener la alerta`)
@@ -15,20 +23,21 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  const {
-    client,
-    date,
-    hour,
-    caseNumber,
-    partNumber,
-    seriesNumber,
-    units,
-    partName,
-    engineerName,
-    description
-  } = req
-
   try {
+    const {
+      body: {
+        client,
+        date,
+        hour,
+        caseNumber,
+        partNumber,
+        seriesNumber,
+        units,
+        partName,
+        engineerName,
+        description
+      }
+    } = req
     const newReplacement = new Model({
       client,
       date,
@@ -61,9 +70,11 @@ router.delete('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
+    const { body, params } = req
+
     await Model.findOneAndUpdate(
-      { _id: req.params.id },
-      { _id: req.params.id, ...body }
+      { _id: params.id },
+      { _id: params.id, ...body }
     )
 
     res.send('Registro actualizado correctamente')
