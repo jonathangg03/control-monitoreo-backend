@@ -4,6 +4,7 @@ if (process.env.NODE_ENV === 'development') {
 
 module.exports = {
   port: process.env.PORT,
+  dbUri: process.env.DB_URI,
   transport: {
     user: process.env.TRANSPORTER_USER,
     password: process.env.TRANSPORTER_PASSWORD

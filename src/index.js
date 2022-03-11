@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const config = require('./config')
-const alert = require('./routes/alert')
+const alert = require('./routes/alert/route')
 const app = express()
 
 app.use(cors())
