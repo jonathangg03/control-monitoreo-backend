@@ -23,6 +23,7 @@ const AlertSchema = new Schema({
     required: true
   },
   contact: String,
+  contactEmail: String,
   monitorName: {
     type: String,
     required: true
