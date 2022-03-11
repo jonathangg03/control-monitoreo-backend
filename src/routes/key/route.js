@@ -2,12 +2,20 @@ const express = require('express')
 const router = express.Router()
 const Model = require('./model')
 
+router.get('/', async (req, res) => {
+  try {
+    const key = await Model.find()
+    res.json(key)
+  } catch (error) {
+    console.log(error.message)
+    res.send(`No se pudo obtener la alerta`)
+  }
+})
+
 router.get('/:id', async (req, res) => {
   try {
     const key = await Model.findById(req.params.id)
-    res.json({
-      key
-    })
+    res.json(key)
   } catch (error) {
     console.log(error.message)
     res.send(`No se pudo obtener la alerta`)
@@ -15,7 +23,9 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  const { user, keyName, units, date, retirement, delivery } = req
+  const {
+    body: { user, keyName, units, date, retirement, delivery }
+  } = req
 
   try {
     const newKey = new Model({
@@ -46,9 +56,10 @@ router.delete('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
+    const { body, params } = req
     await Model.findOneAndUpdate(
-      { _id: req.params.id },
-      { _id: req.params.id, ...body }
+      { _id: params.id },
+      { _id: params.id, ...body }
     )
 
     res.send('Registro actualizado correctamente')
