@@ -54,6 +54,7 @@ router.post('/', async (req, res) => {
     ticketOpened,
     description,
     actions,
+    contactEmail,
     extraComments
   } = body
 
@@ -89,7 +90,7 @@ router.post('/', async (req, res) => {
     `
     let info = await transporter.sendMail({
       from: '"Control monitoreo" <jona03g97@gmail.com>', // sender address
-      to: `megabyte9703@gmail.com, ${contactEmail}`, // list of receivers
+      to: `megabyte9703@gmail.com, ${contactEmail || null}`, // list of receivers
       subject: `${client} -- ${source} -- ${description}`, // Subject line
       html: message // html body
     })
