@@ -1,21 +1,21 @@
 const express = require('express')
 const router = express.Router()
-const Model = require('./model')
+const KeyService = require('../services/key.service')
+const service = new KeyService()
 
 router.get('/', async (req, res) => {
   try {
-    const replacement = await Model.find()
-    res.json(replacement)
+    const keys = await service.find()
+    res.json(keys)
   } catch (error) {
     console.log(error.message)
-    res.send(`No se pudo obtener la alerta`)
   }
 })
 
 router.get('/:id', async (req, res) => {
   try {
-    const replacement = await Model.findById(req.params.id)
-    res.json(replacement)
+    const key = await Model.findById(req.params.id)
+    res.json(key)
   } catch (error) {
     console.log(error.message)
     res.send(`No se pudo obtener la alerta`)
@@ -23,38 +23,24 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+  const {
+    body: { user, keyName, units, date, retirement, delivery }
+  } = req
+
   try {
-    const {
-      body: {
-        client,
-        date,
-        hour,
-        caseNumber,
-        partNumber,
-        seriesNumber,
-        units,
-        partName,
-        engineerName,
-        description
-      }
-    } = req
-    const newReplacement = new Model({
-      client,
-      date,
-      hour,
-      caseNumber,
-      partNumber,
-      seriesNumber,
+    const newKey = new Model({
+      user,
+      keyName,
       units,
-      partName,
-      engineerName,
-      description
+      date,
+      retirement,
+      delivery
     })
-    await newReplacement.save()
-    res.send('Registro de equipo ingresada con exito')
+    await newKey.save()
+    res.send('Registro de llave ingresada con exito')
   } catch (error) {
     console.log(error.message)
-    res.send('Error al ingresar el registro')
+    res.send('Error al ingresar la alerta')
   }
 })
 
@@ -71,7 +57,6 @@ router.delete('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { body, params } = req
-
     await Model.findOneAndUpdate(
       { _id: params.id },
       { _id: params.id, ...body }
