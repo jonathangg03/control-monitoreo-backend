@@ -32,15 +32,14 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const { params } = req
     const { id } = params
     const alert = await service.findOne(id)
     res.json(alert)
   } catch (error) {
-    console.log(error.message)
-    res.send(error.message)
+    next(error)
   }
 })
 

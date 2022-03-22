@@ -1,3 +1,4 @@
+const boom = require('boom')
 const Model = require('../models/alert.model')
 
 class Alert {
@@ -10,6 +11,9 @@ class Alert {
 
   async findOne(id) {
     const alert = await Model.findById(id)
+    if (!alert) {
+      throw boom.notFound('Alert not found')
+    }
     return alert
   }
 
