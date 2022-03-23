@@ -9,63 +9,51 @@ router.get('/', async (req, res) => {
     res.json(keys)
   } catch (error) {
     console.log(error.message)
+    res.send(error.message)
   }
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
   try {
-    const key = await Model.findById(req.params.id)
+    const { params } = req
+    const { id } = params
+    const key = await service.findOne(id)
     res.json(key)
   } catch (error) {
-    console.log(error.message)
-    res.send(`No se pudo obtener la alerta`)
+    next(error)
   }
 })
 
 router.post('/', async (req, res) => {
-  const {
-    body: { user, keyName, units, date, retirement, delivery }
-  } = req
-
   try {
-    const newKey = new Model({
-      user,
-      keyName,
-      units,
-      date,
-      retirement,
-      delivery
-    })
-    await newKey.save()
-    res.send('Registro de llave ingresada con exito')
+    const { body } = req
+    const newKey = await service.create(body)
+    res.json(newKey)
   } catch (error) {
     console.log(error.message)
-    res.send('Error al ingresar la alerta')
+    res.send(error.message)
   }
 })
 
-router.delete('/:id', async (req, res) => {
-  try {
-    await Model.findByIdAndDelete(req.params.id)
-    res.send('Registro eliminado')
-  } catch (error) {
-    console.log(`Error: ${error.message}`)
-    res.send('Error al eliminar')
-  }
-})
-
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res, next) => {
   try {
     const { body, params } = req
-    await Model.findOneAndUpdate(
-      { _id: params.id },
-      { _id: params.id, ...body }
-    )
-
-    res.send('Registro actualizado correctamente')
+    const { id } = params
+    const key = await service.update(id, body)
+    res.send(key)
   } catch (error) {
-    console.log(`Error: ${error.message}`)
-    res.send('Error al editar')
+    next(error)
+  }
+})
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const { params } = req
+    const { id } = params
+    const key = await service.delete(id)
+    res.send(key)
+  } catch (error) {
+    next(error)
   }
 })
 

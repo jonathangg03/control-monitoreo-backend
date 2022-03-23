@@ -1,4 +1,4 @@
-const boom = require('boom')
+const boom = require('@hapi/boom')
 const Model = require('../models/alert.model')
 
 class Alert {

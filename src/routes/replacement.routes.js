@@ -1,85 +1,58 @@
 const express = require('express')
 const router = express.Router()
+const ReplacementService = require('../services/replacement.service')
+const service = new ReplacementService()
 
 router.get('/', async (req, res) => {
   try {
-    const replacement = await Model.find()
+    const replacement = await service.find()
     res.json(replacement)
   } catch (error) {
     console.log(error.message)
-    res.send(`No se pudo obtener la alerta`)
+    res.send(error.message)
   }
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
   try {
-    const replacement = await Model.findById(req.params.id)
+    const { params } = req
+    const { id } = params
+    const replacements = await service.findOne(id)
+    res.json(replacements)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.post('/', async (req, res, next) => {
+  try {
+    const { body } = req
+    const replacement = await service.create(body)
     res.json(replacement)
   } catch (error) {
-    console.log(error.message)
-    res.send(`No se pudo obtener la alerta`)
+    next(error)
   }
 })
 
-router.post('/', async (req, res) => {
-  try {
-    const {
-      body: {
-        client,
-        date,
-        hour,
-        caseNumber,
-        partNumber,
-        seriesNumber,
-        units,
-        partName,
-        engineerName,
-        description
-      }
-    } = req
-    const newReplacement = new Model({
-      client,
-      date,
-      hour,
-      caseNumber,
-      partNumber,
-      seriesNumber,
-      units,
-      partName,
-      engineerName,
-      description
-    })
-    await newReplacement.save()
-    res.send('Registro de equipo ingresada con exito')
-  } catch (error) {
-    console.log(error.message)
-    res.send('Error al ingresar el registro')
-  }
-})
-
-router.delete('/:id', async (req, res) => {
-  try {
-    await Model.findByIdAndDelete(req.params.id)
-    res.send('Registro eliminado')
-  } catch (error) {
-    console.log(`Error: ${error.message}`)
-    res.send('Error al eliminar')
-  }
-})
-
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res, next) => {
   try {
     const { body, params } = req
-
-    await Model.findOneAndUpdate(
-      { _id: params.id },
-      { _id: params.id, ...body }
-    )
-
-    res.send('Registro actualizado correctamente')
+    const { id } = params
+    const replacement = await service.update(id, body)
+    res.send(replacement)
   } catch (error) {
-    console.log(`Error: ${error.message}`)
-    res.send('Error al editar')
+    next(error)
+  }
+})
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const { params } = req
+    const { id } = params
+    const replacement = await service.delete(id)
+    res.send(replacement)
+  } catch (error) {
+    next(error)
   }
 })
 
