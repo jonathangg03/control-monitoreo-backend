@@ -78,27 +78,25 @@ router.post('/', async (req, res) => {
   }
 })
 
-router.delete('/:id', async (req, res) => {
-  try {
-    const { params } = req
-    const { id } = params
-    const deleteAlert = await service.delete(id)
-    res.send(deleteAlert)
-  } catch (error) {
-    console.log(`Error: ${error.message}`)
-    res.send('Error al eliminar')
-  }
-})
-
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res, next) => {
   try {
     const { body, params } = req
     const { id } = params
     const newAlert = await service.update(id, body)
     res.send(newAlert)
   } catch (error) {
-    console.log(`Error: ${error.message}`)
-    res.send('Error al editar')
+    next(error)
+  }
+})
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const { params } = req
+    const { id } = params
+    const deleteAlert = await service.delete(id)
+    res.send(deleteAlert)
+  } catch (error) {
+    next(error)
   }
 })
 

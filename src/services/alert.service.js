@@ -24,12 +24,21 @@ class Alert {
   }
 
   async update(id, data) {
-    await Model.findOneAndUpdate({ _id: id }, { _id: id, ...data })
+    const alert = await Model.findOneAndUpdate(
+      { _id: id },
+      { _id: id, ...data }
+    )
+    if (!alert) {
+      throw boom.notFound('Alert not found')
+    }
     return data
   }
 
   async delete(id) {
-    await Model.findByIdAndDelete(id)
+    const alert = await Model.findByIdAndDelete(id)
+    if (!alert) {
+      throw boom.notFound('Alert not found')
+    }
     return `${id} deleted`
   }
 }
