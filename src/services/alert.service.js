@@ -24,10 +24,7 @@ class Alert {
   }
 
   async update(id, data) {
-    const alert = await Model.findOneAndUpdate(
-      { _id: id },
-      { _id: id, ...data }
-    )
+    const alert = await Model.findOneAndUpdate({ _id: id }, { data })
     if (!alert) {
       throw boom.notFound('Alert not found')
     }

@@ -12,6 +12,8 @@ const ticketOpened = Joi.number()
 const description = Joi.string()
 const actions = Joi.string()
 const extraComments = Joi.string()
+const _id = Joi.string()
+const __v = Joi.number()
 
 const createAlertSchema = Joi.object({
   client: client.required(),
@@ -29,6 +31,7 @@ const createAlertSchema = Joi.object({
 })
 
 const updateAlertSchema = Joi.object({
+  _id: _id,
   client: client,
   source: source,
   date: date,
@@ -40,7 +43,8 @@ const updateAlertSchema = Joi.object({
   ticketOpened: ticketOpened,
   description: description,
   actions: actions,
-  extraComments: extraComments
+  extraComments: extraComments,
+  __v: __v
 })
 
 module.exports = { createAlertSchema, updateAlertSchema }
