@@ -1,4 +1,9 @@
 const express = require('express')
+const validatorHandler = require('../middlewares/validatorHandler')
+const {
+  createAlertSchema,
+  updateAlertSchema
+} = require('../schemas/alert.schema')
 const router = express.Router()
 const KeyService = require('../services/key.service')
 const service = new KeyService()
@@ -8,7 +13,6 @@ router.get('/', async (req, res) => {
     const keys = await service.find()
     res.json(keys)
   } catch (error) {
-    console.log(error.message)
     res.send(error.message)
   }
 })
@@ -24,27 +28,35 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res) => {
-  try {
-    const { body } = req
-    const newKey = await service.create(body)
-    res.json(newKey)
-  } catch (error) {
-    console.log(error.message)
-    res.send(error.message)
+router.post(
+  '/',
+  validatorHandler(createAlertSchema, 'body'),
+  async (req, res) => {
+    try {
+      const { body } = req
+      const newKey = await service.create(body)
+      res.json(newKey)
+    } catch (error) {
+      console.log(error.message)
+      res.send(error.message)
+    }
   }
-})
+)
 
-router.put('/:id', async (req, res, next) => {
-  try {
-    const { body, params } = req
-    const { id } = params
-    const key = await service.update(id, body)
-    res.send(key)
-  } catch (error) {
-    next(error)
+router.put(
+  '/:id',
+  validatorHandler(updateAlertSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const { body, params } = req
+      const { id } = params
+      const key = await service.update(id, body)
+      res.send(key)
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
 
 router.delete('/:id', async (req, res, next) => {
   try {
