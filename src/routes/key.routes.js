@@ -1,9 +1,6 @@
 const express = require('express')
 const validatorHandler = require('../middlewares/validatorHandler')
-const {
-  createAlertSchema,
-  updateAlertSchema
-} = require('../schemas/alert.schema')
+const { createKeySchema, updateKeySchema } = require('../schemas/key.schema')
 const router = express.Router()
 const KeyService = require('../services/key.service')
 const service = new KeyService()
@@ -30,7 +27,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.post(
   '/',
-  validatorHandler(createAlertSchema, 'body'),
+  validatorHandler(createKeySchema, 'body'),
   async (req, res) => {
     try {
       const { body } = req
@@ -45,7 +42,7 @@ router.post(
 
 router.put(
   '/:id',
-  validatorHandler(updateAlertSchema, 'body'),
+  validatorHandler(updateKeySchema, 'body'),
   async (req, res, next) => {
     try {
       const { body, params } = req

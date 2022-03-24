@@ -5,8 +5,8 @@ const source = Joi.string()
 const date = Joi.string()
 const alertHour = Joi.string()
 const reportHour = Joi.string()
-const contac = Joi.string()
-const contactEmai = Joi.string()
+const contact = Joi.string()
+const contactEmail = Joi.string()
 const monitorName = Joi.string()
 const ticketOpened = Joi.number()
 const description = Joi.string()
@@ -19,8 +19,8 @@ const createAlertSchema = Joi.object({
   date: date.required(),
   alertHour: alertHour.required(),
   reportHour: reportHour.required(),
-  contac: contac,
-  contactEmai: contactEmai,
+  contact: contact,
+  contactEmail: contactEmail,
   monitorName: monitorName.required(),
   ticketOpened: ticketOpened,
   description: description.required(),
@@ -34,8 +34,8 @@ const updateAlertSchema = Joi.object({
   date: date,
   alertHour: alertHour,
   reportHour: reportHour,
-  contac: contac,
-  contactEmai: contactEmai,
+  contact: contact,
+  contactEmail: contactEmail,
   monitorName: monitorName,
   ticketOpened: ticketOpened,
   description: description,

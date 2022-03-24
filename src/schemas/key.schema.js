@@ -18,11 +18,11 @@ const createKeySchema = Joi.object({
 
 const updateKeySchema = Joi.object({
   user: user,
-  keyName: keyNameuser,
-  units: unitsuser,
-  date: dateuser,
-  retirement: retirementuser,
-  delivery: deliveryuser
+  keyName: keyName,
+  units: units,
+  date: date,
+  retirement: retirement,
+  delivery: delivery
 })
 
 module.exports = { createKeySchema, updateKeySchema }
