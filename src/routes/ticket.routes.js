@@ -10,7 +10,6 @@ router.get('/', async (req, res) => {
     const tickets = await service.find()
     res.json(tickets)
   } catch (error) {
-    console.log(error.message)
     res.send(error.message)
   }
 })
@@ -35,8 +34,7 @@ router.post(
       const ticket = await service.create(body)
       res.json(ticket)
     } catch (error) {
-      console.log(error.message)
-      res.send(error.message)
+      next(error)
     }
   }
 )

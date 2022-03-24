@@ -1,6 +1,6 @@
 const Joi = require('joi')
 
-const caseNumber = Joi.number().integer()
+const caseNumber = Joi.number()
 const client = Joi.string()
 const date = Joi.string()
 const enterHour = Joi.string()
