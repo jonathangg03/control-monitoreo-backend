@@ -7,6 +7,11 @@ const nodemailer = require('nodemailer')
 const {
   transport: { user, password }
 } = require('../config')
+const validatorHandler = require('../middlewares/validatorHandler')
+const {
+  createAlertSchema,
+  updateAlertSchema
+} = require('../schemas/alert.schema')
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
@@ -27,7 +32,6 @@ router.get('/', async (req, res) => {
     const alerts = await service.find()
     res.json(alerts)
   } catch (error) {
-    console.log(error.message)
     res.send(error.message)
   }
 })
@@ -43,11 +47,14 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res) => {
-  try {
-    const { body } = req
-    const newAlert = await service.create(body)
-    const message = `
+router.post(
+  '/',
+  validatorHandler(createAlertSchema, 'body'),
+  async (req, res) => {
+    try {
+      const { body } = req
+      const newAlert = await service.create(body)
+      const message = `
       <h2>Cliente: </h2><h3>${body.client}</h3>
       <h2>Equipo: </h2><h3>${body.source}</h3>
       <h2>Fecha: </h2><h3>${body.date}</h3>
@@ -61,33 +68,37 @@ router.post('/', async (req, res) => {
       <h2>Comentarios extra: </h2><h3> ${body.extraComments}</h3>
     `
 
-    let info = await transporter.sendMail({
-      from: '"Control monitoreo" <jona03g97@gmail.com>', // sender address
-      to: `megabyte9703@gmail.com, ${body.contactEmail || null}`, // list of receivers
-      subject: `${body.client} -- ${body.source} -- ${body.description}`, // Subject line
-      html: message // html body
-    })
+      let info = await transporter.sendMail({
+        from: '"Control monitoreo" <jona03g97@gmail.com>', // sender address
+        to: `megabyte9703@gmail.com, ${body.contactEmail || null}`, // list of receivers
+        subject: `${body.client} -- ${body.source} -- ${body.description}`, // Subject line
+        html: message // html body
+      })
 
-    if (!info.error) {
-      console.log('Alerta ingresada con exito')
+      if (!info.error) {
+        console.log('Alerta ingresada con exito')
+      }
+      res.json(newAlert)
+    } catch (error) {
+      next(error)
     }
-    res.json(newAlert)
-  } catch (error) {
-    console.log(error.message)
-    res.send(error.message)
   }
-})
+)
 
-router.put('/:id', async (req, res, next) => {
-  try {
-    const { body, params } = req
-    const { id } = params
-    const newAlert = await service.update(id, body)
-    res.send(newAlert)
-  } catch (error) {
-    next(error)
+router.put(
+  '/:id',
+  validatorHandler(updateAlertSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const { body, params } = req
+      const { id } = params
+      const newAlert = await service.update(id, body)
+      res.send(newAlert)
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
 
 router.delete('/:id', async (req, res, next) => {
   try {
