@@ -39,7 +39,7 @@ class Ticket {
     if (!ticket) {
       throw boom.notFound('Ticket not found')
     }
-    return `${id} deleted`
+    return { message: `${id} deleted` }
   }
 }
 

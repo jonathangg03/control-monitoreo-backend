@@ -8,6 +8,8 @@ const firstReplyHour = Joi.string()
 const engineer = Joi.string()
 const description = Joi.string()
 const actions = Joi.string()
+const _id = Joi.string()
+const __v = Joi.number()
 
 const createTicketSchema = Joi.object({
   caseNumber: caseNumber.required(),
@@ -28,7 +30,9 @@ const updateTicketSchema = Joi.object({
   firstReplyHour: firstReplyHour,
   engineer: engineer,
   description: description,
-  actions: actions
+  actions: actions,
+  _id: _id,
+  __v: __v
 })
 
 module.exports = { createTicketSchema, updateTicketSchema }

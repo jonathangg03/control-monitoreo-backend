@@ -10,6 +10,8 @@ const units = Joi.number()
 const partName = Joi.string()
 const engineerName = Joi.string()
 const description = Joi.string()
+const _id = Joi.string()
+const __v = Joi.number()
 
 const createReplacementSchema = Joi.object({
   client: client.required(),
@@ -34,7 +36,9 @@ const updateReplacementSchema = Joi.object({
   units: units,
   partName: partName,
   engineerName: engineerName,
-  description: description
+  description: description,
+  _id: _id,
+  __v: __v
 })
 
 module.exports = { createReplacementSchema, updateReplacementSchema }

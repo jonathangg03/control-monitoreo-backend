@@ -39,7 +39,7 @@ class Replacement {
     if (!replacement) {
       throw boom.notFound('Replacement not found')
     }
-    return `${id} deleted`
+    return { message: `${id} deleted` }
   }
 }
 

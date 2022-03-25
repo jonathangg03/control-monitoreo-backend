@@ -6,6 +6,8 @@ const units = Joi.number()
 const date = Joi.string()
 const retirement = Joi.string()
 const delivery = Joi.string()
+const _id = Joi.string()
+const __v = Joi.number()
 
 const createKeySchema = Joi.object({
   user: user.required(),
@@ -22,7 +24,9 @@ const updateKeySchema = Joi.object({
   units: units,
   date: date,
   retirement: retirement,
-  delivery: delivery
+  delivery: delivery,
+  _id: _id,
+  __v: __v
 })
 
 module.exports = { createKeySchema, updateKeySchema }

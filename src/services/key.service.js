@@ -34,7 +34,7 @@ class Key {
     if (!key) {
       throw boom.notFound('Key not found')
     }
-    return `${id} deleted`
+    return { message: `${id} deleted` }
   }
 }
 

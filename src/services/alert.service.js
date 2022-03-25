@@ -36,7 +36,7 @@ class Alert {
     if (!alert) {
       throw boom.notFound('Alert not found')
     }
-    return `${id} deleted`
+    return { message: `${id} deleted` }
   }
 }
 
